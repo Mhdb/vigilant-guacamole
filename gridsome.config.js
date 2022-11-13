@@ -8,9 +8,33 @@ const tailwind = require("tailwindcss");
 const postcssPlugins = [tailwind()];
 
 module.exports = {
-  siteName: "Your Brand name here",
+  siteName: "Movil",
   siteUrl: "https://twblog.terabytetiger.com",
-  plugins: [
+  plugins: [{
+      use: '@gridsome/source-airtable',
+      options: {
+        apiKey: process.env.AIRTABLE_KEY, // required
+        base: process.env.AIRTABLE_BASE, // required
+        tables: [{
+            name: 'tel', // required
+            typeName: 'tel', // required
+            select: {}, // optional,
+            links: [ // optional
+              {
+                fieldName: 'Operador',
+                typeName: 'Operador',
+                linkToFirst: false // optional
+              }
+            ]
+          },
+          {
+            name: '', // required
+            typeName: '', // required
+          },
+        ],
+        tableName: 'Operador', // required
+      },
+    },
     {
       use: "@gridsome/source-filesystem",
       options: {
@@ -26,6 +50,11 @@ module.exports = {
       },
     },
   ],
+
+  templates: {
+    YOUR_TYPE_NAME: 'Operador', // optional
+  },
+
   transformers: {
     remark: {
       plugins: [
@@ -39,6 +68,7 @@ module.exports = {
             },
           },
         ],
+
         [
           "gridsome-plugin-remark-prismjs-all",
           {
